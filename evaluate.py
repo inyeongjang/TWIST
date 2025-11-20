@@ -15,6 +15,7 @@ import sys
 import time
 import urllib
 import widen_resnet
+import subprocess
 
 from torch import nn, optim
 from torchvision import models, datasets, transforms
@@ -272,7 +273,7 @@ def main_worker(gpu, args):
 
 
 def handle_sigusr1(signum, frame):
-    os.system(f'scontrol requeue {os.getenv("SLURM_JOB_ID")}')
+    subprocess.run(['scontrol', 'requeue', os.getenv("SLURM_JOB_ID")])
     exit()
 
 
@@ -323,4 +324,3 @@ def accuracy(output, target, topk=(1,)):
 
 if __name__ == '__main__':
     main()
-
